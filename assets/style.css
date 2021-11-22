@@ -3,3 +3,29 @@
 header {
      background-image: url(./pexels-tahir-shaw-186980.jpg);
 }
+
+.low {
+    background-color: green;
+    color: white;
+}
+
+.moderate {
+ background-color: yellow;
+}
+
+.high {
+ background-color: orangered;
+ color: white;
+}
+
+.very-high {
+    background-color: red;
+    color: white;
+
+}
+
+.extreme {
+    background-color: rgb(219, 9, 219);
+    color: white;
+
+}

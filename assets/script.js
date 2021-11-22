@@ -3,7 +3,7 @@ let cityInput = document.querySelector("#city-input");
 let cityButton = document.querySelector("#city-button");
 let cityTitle = document.querySelector("#current-city");
 let currentWeatherEl = document.querySelector(".current")
-let uvDiv = document.querySelector(".")
+let dailyForecastEl = document.querySelector(".forecast");
 // Personal API key to be used for project and from here on out
 
 const apiKey = "cc742ab3f18c60ff03116b342797094a"
@@ -24,8 +24,7 @@ const apiKey = "cc742ab3f18c60ff03116b342797094a"
     fetch(apiUrl)
     .then(function(response) {
         if (response.ok) {
-            response.json().then(function(data) {
-                
+            response.json().then(function(data) {             
                 const lat = data.coord.lat;
                 const lon = data.coord.lon;
                 let apiUrl2 = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude={part}&appid=${apiKey}`
@@ -35,9 +34,26 @@ const apiKey = "cc742ab3f18c60ff03116b342797094a"
                             response.json().then(function(data2) {
                                
                                 console.log(data2);
-                                let addedDiv = document.createElement("div");
-                                addedDiv.innerHTML = `UV Index: ${data2.current.uvi}`
-                                topDiv.appendChild(addedDiv);
+                                let uvIndex = data2.current.uvi;
+                                let uvIndexDiv = document.createElement("div");
+                                if (uvIndex < 3){
+                                    uvIndexDiv.setAttribute("class", "low");
+                                }
+                                else if (uvIndex >= 3 && uvIndex < 6 ) {
+                                    uvIndexDiv.setAttribute("class", "moderate");
+                                }
+                                else if (uvIndex >= 6 && uvIndex < 8 ) {
+                                    uvIndexDiv.setAttribute("class", "high");
+                                }
+                                else if (uvIndex >= 8 && uvIndex < 11 ) {
+                                    uvIndexDiv.setAttribute("class", "very-high");
+                                }
+                                else if (uvIndex >= 11 ) {
+                                    uvIndexDiv.setAttribute("class", "extreme");
+                                };
+                                
+                                uvIndexDiv.innerHTML = `UV Index: ${data2.current.uvi}`
+                                topDivContent2.appendChild(uvIndexDiv);
                                 
                             })
                         }// Currently: ${data.weather[0].main}
@@ -52,25 +68,28 @@ const apiKey = "cc742ab3f18c60ff03116b342797094a"
                 let topDivContent = document.createElement("div");
                 let topDivContent2 = document.createElement("div");
                 
-                
+                cityTitle.textContent = data.name; // adds title of city
                 currentWeatherEl.appendChild(forecastDiv);
+                // Adds styling class and creates divs for display
                 forecastDiv.appendChild(topDiv);
                 topDiv.setAttribute("class", "flex justify-center ")
+                topDivContent.setAttribute("class", "flex-initial");
+
                 forecastDiv.appendChild(bottomDiv);
-                topDivContent.setAttribute("class", "flex-initial flex-col pt-3 pb-3");
-                topDivContent2.setAttribute("class")
+                topDivContent2.setAttribute("class", "flex-initial flex-col pt-3 pb-3")
                 topDiv.appendChild(topDivContent);
-                topDivContent.innerHTML = `<div class="flex-inital"> <img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="${data.weather[0].description}"></div>`
-                + `<div class="addedDiv >
-                    <div>Currently: ${data.weather[0].main} / ${data.main.temp} F </div>
+                topDiv.appendChild(topDivContent2);
+                topDivContent.innerHTML = 
+                `<img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="${data.weather[0].description}">`;
+
+                topDivContent2.innerHTML = 
+                    `<div>Currently: ${data.weather[0].main} / ${data.main.temp} F</div>
                     <div>Hi Temp: ${data.main.temp_max} F</div>
                     <div>Lo Temp: ${data.main.temp_min} F</div>
                     <div>Humidity: ${data.main.humidity}%</div>
-                    <div>Wind Speed: ${data.wind.speed} mph</div>
-                    
-
-                </div>`;
-                cityTitle.textContent = data.name;
+                    <div>Wind Speed: ${data.wind.speed} mph</div>`;
+                
+                
                 
             })
         }// Currently: ${data.weather[0].main}
@@ -91,8 +110,6 @@ var searchCity = function(event) {
     
     if (cityName) {
         getCityWeather(cityName);
-        // var lat = data.coord.lat;
-        // var lon = data.coord.lon;
     }
     else {
         alert("Unable to connect to OpenWeatherMap")
