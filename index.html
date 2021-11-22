@@ -13,50 +13,34 @@
         <header class="p-24 md:p-36 flex-col bg-cover">
             <!--Title of Page / Jumbotron-->
             <h1 class="text-center text-3xl md:text-6xl pb-4 text-white">Wooley Weather Checker</h1>
-            
-            
-            
-            <div class="flex p-1 border-0 rounded-lg bg-white bg-opacity-30">
-                <form id="search-form" class="form">
-                    <div class="form-inline form-group">
-                      <div class="input-group">
-                        <input
-                          class="form-input weather-search"
-                          type="text"
-                          id="city-input"
-                          placeholder="Enter City Name Here"
-                          aria-labelledby="form-heading"
-                          aria-controls="today forecast"
-                        />
-                        <div class="input-group-append">
-                          <button
-                            type="submit"
-                            class="btn search-button flex-shrink ml-1 pl-2 pr-2 text-white"
-                            id="city-button"
-                            aria-label="submit search">
-                            <svg class="w-7 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg> Search  
-                          </button>
-                          <hr class="hr weather-hr" />
-                        </div>
+            <div class="flex">
+                <form id="city-form" class="flex-grow">
+                    <div class="flex-grow justify-center">
+                        <div class="flex-row p-1 border-0 rounded-lg bg-white bg-opacity-30">
+                            <input
+                            class="flex-grow"
+                            type="text"
+                            id="city-input"
+                            placeholder="Enter City Name Here"
+                            aria-labelledby="form-heading"
+                            aria-controls="today forecast"
+                            />
+                            <!-- <div class="w-1/12"> -->
+                                <button
+                                    type="submit"
+                                    class="flex-shrink text-white"
+                                    id="city-button"
+                                    aria-label="submit search">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>  
+                                </button>
+                            <!-- <hr class="hr weather-hr" /> -->
+                            <!-- </div> -->
                       </div>
                     </div>
                   </form>
-                <!-- Search Bar -->
-                
-                <!-- <form id="city-name" class="flex-grow text-white justify-around pl-2">
-                    
-                    <input name="city-name"  type="text"  
-                    class="sm:flex-grow bg-white bg-opacity-10 w-11/12 border-0 rounded-lg pl-2 ">
-                         <label for="city-name" class="">Enter City Name Here</label> -->
-                    <!-- </input>
-
-                    <button id="city-button" type="submit" class=" ">
-                        
-                    </button>
-                </form> -->
             </div>
 
 
@@ -65,28 +49,25 @@
         </header>
         
 
-        <main class="">
+        <main>
             <!--Sample box for city entered-->
             <section id="city-container" class="flex-col">
-                <div class="current flex-col">
-                    <h2 id="current-city" class="text-center text-3xl">City Name</h2>
+                <div class="flex-col">
+                    <h2 id="current-city" class="forecast text-center text-3xl">
+                        <!-- city name goes here -->
+                    </h2>
+                    <div class="current">
+                         <!-- current weather element goes here -->
+                    </div>
                 </div>    
                 <div class="pt-3">
-                    <h3 id="forecast-header" class="text-center text-xl">5 Day Forecast:</h3>
+                    <h3 id="forecast-header" class="forecast text-center text-xl">
+                        <!-- forecast header goes here (5 day forecast) -->
+                    </h3>
                 </div>
                 <div class="flex ">
-                    <ul class="flex-grow sm:flex justify-around text-center">
-                        <li class="forecast border-2">
-                            <h4><!--date--></h4>
-                            <div><!--icon--></div>
-                            <div><!--temperature--></div>
-                            <div><!--windspeed--></div>
-                            <div><!--humidity--></div>
-                        </li>
-                        <li class="forecast">day2 info</li>
-                        <li class="forecast">day3 info</li>
-                        <li class="forecast">day4 info</li>
-                        <li class="forecast">day5 info</li>
+                    <ul id="forecast-display" class="forecast flex-grow sm:flex justify-around text-center">
+                        <!--Append list items here from javascript-->
                     </ul>
                 </div>
             </section>
