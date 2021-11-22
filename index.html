@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="./assets/style.css">
+        <title>Wooley Weather</title>
+    </head>
+
+    <body class="flex-col">
+        <header class="p-24 md:p-36 flex-col bg-cover">
+            <!--Title of Page / Jumbotron-->
+            <h1 class="text-center text-3xl md:text-6xl pb-4 text-white">Wooley Weather Checker</h1>
+            
+            
+            
+            <div class="flex p-1 border-0 rounded-lg bg-white bg-opacity-30">
+                <form id="search-form" class="form">
+                    <div class="form-inline form-group">
+                      <div class="input-group">
+                        <input
+                          class="form-input weather-search"
+                          type="text"
+                          id="city-input"
+                          placeholder="Enter City Name Here"
+                          aria-labelledby="form-heading"
+                          aria-controls="today forecast"
+                        />
+                        <div class="input-group-append">
+                          <button
+                            type="submit"
+                            class="btn search-button flex-shrink ml-1 pl-2 pr-2 text-white"
+                            id="city-button"
+                            aria-label="submit search">
+                            <svg class="w-7 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg> Search  
+                          </button>
+                          <hr class="hr weather-hr" />
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                <!-- Search Bar -->
+                
+                <!-- <form id="city-name" class="flex-grow text-white justify-around pl-2">
+                    
+                    <input name="city-name"  type="text"  
+                    class="sm:flex-grow bg-white bg-opacity-10 w-11/12 border-0 rounded-lg pl-2 ">
+                         <label for="city-name" class="">Enter City Name Here</label> -->
+                    <!-- </input>
+
+                    <button id="city-button" type="submit" class=" ">
+                        
+                    </button>
+                </form> -->
+            </div>
+
+
+
+
+        </header>
+        
+
+        <main class="">
+            <!--Sample box for city entered-->
+            <section id="city-container" class="flex-col">
+                <div class="current flex-col">
+                    <h2 id="current-city" class="text-center text-3xl">City Name</h2>
+                </div>    
+                <div class="pt-3">
+                    <h3 class="text-center text-xl">5 Day Forecast:</h3>
+                </div>
+                <div class="flex ">
+                    <ul class="flex-grow sm:flex justify-around text-center">
+                        <li class="forecast border-2">
+                            <h4><!--date--></h4>
+                            <div><!--icon--></div>
+                            <div><!--temperature--></div>
+                            <div><!--windspeed--></div>
+                            <div><!--humidity--></div>
+                        </li>
+                        <li class="forecast">day2 info</li>
+                        <li class="forecast">day3 info</li>
+                        <li class="forecast">day4 info</li>
+                        <li class="forecast">day5 info</li>
+                    </ul>
+                </div>
+            </section>
+        </main> 
+                
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" 
+            integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" 
+            crossorigin="anonymous" 
+            referrerpolicy="no-referrer"></script>
+        <script src="./assets/script.js"></script>
+    </body>
+</html>
