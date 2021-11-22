@@ -27,12 +27,12 @@ const apiKey = "cc742ab3f18c60ff03116b342797094a"
             response.json().then(function(data) {             
                 const lat = data.coord.lat;
                 const lon = data.coord.lon;
-                let apiUrl2 = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude={part}&appid=${apiKey}`
+                let apiUrl2 = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude={part}&appid=${apiKey}&units=imperial`;
                 fetch(apiUrl2)
                     .then(function(response) {
                         if (response.ok) {
                             response.json().then(function(data2) {
-                               
+                                console.log(apiUrl2);
                                 console.log(data2);
                                 let uvIndex = data2.current.uvi;
                                 let uvIndexDiv = document.createElement("div");
@@ -52,8 +52,18 @@ const apiKey = "cc742ab3f18c60ff03116b342797094a"
                                     uvIndexDiv.setAttribute("class", "extreme");
                                 };
                                 
+                                const dailyData = [
+                                    data2.daily[1],
+                                    data2.daily[2],
+                                    data2.daily[3],
+                                    data2.daily[4],
+                                    data2.daily[5]
+                                ];
                                 uvIndexDiv.innerHTML = `UV Index: ${data2.current.uvi}`
                                 topDivContent2.appendChild(uvIndexDiv);
+
+                                // 5 day forecast list creation
+                                dailyData.forEach(displayForecast); 
                                 
                             })
                         }// Currently: ${data.weather[0].main}
@@ -121,15 +131,21 @@ var searchCity = function(event) {
     
 }
 
-// var displayCurrentWeather = function(data){
-//     // let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=imperial`;
+var displayForecast = function(array){
+    // initialized variables as 
+    let icon = `<img src="http://openweathermap.org/img/wn/${array.weather.icon}@2x.png" alt="${array.weather.description}">`;
+    let hiTemp = `${array.temp.max}`;
+    let loTemp = `${array.temp.min}`;
+    let windSpeed = `${array.windspeed}`;
+    let humidity = `${array.humidity}`;
+
+
+    console.log(icon);
     
     
     
-    
-    
-// }
-// searchCity();
+}
+//  searchCity();
 
 searchForm.addEventListener("submit", searchCity);
 
