@@ -11,7 +11,7 @@ All in all, this project demonstrates the complete understanding of using the fe
 
 ## Installation
 To install and run this repository follow theses instructions below
-1. Go to https://github.com/jaywooski/
+1. Go to https://github.com/jaywooski/Wooley-Weather-Dashboard-Chal-6
 2. Clone the repository from Github to your local repository on your computer.
 3. Open the  repository with Visual Studio Code.
 4. Enjoy!
