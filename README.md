@@ -25,3 +25,8 @@ To install and run this repository follow theses instructions below
 * Switch to the directory in your local repository and pull it into the local one. 
 * In your terminal, change to that directory using **git checkout** and make sure you are in that branch using **git status** or **git branch**
 * Type command **code .** and it should open in Visual Studio Code.
+
+
+## Progression
+This project will be updated in the future in order to clear a couple of bugs to be posted as issues. See Issues tab for this repository.
+Also there will be styling updates and possibly a few more refactoring sessions on the overall coding of this project.
