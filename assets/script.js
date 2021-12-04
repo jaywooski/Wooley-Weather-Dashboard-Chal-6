@@ -8,140 +8,185 @@ let currentWeatherEl = document.querySelector(".current")
 let dailyForecastEl = document.querySelector("#forecast-display");
 let forecastHeader = document.querySelector("#forecast-header");
 let forecastDate = document.querySelector(".forecast-time");
+let buttonArea = document.querySelector(".cities-saved");
 
 
 // Personal API key to be used for project and from here on out
 
 const apiKey = "cc742ab3f18c60ff03116b342797094a"
 
-
-
+// Creates empty object to put in array of cityNames inputted.
+const cityList = [];
 
 
 function getCityWeather(cityName) {
-
+    
     let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=imperial`;
     
     console.log(cityName);
+    
     console.log(apiUrl);
-
+    
+    
     
     fetch(apiUrl)
-    .then(function(response) {
-        if (response.ok) {
-            response.json().then(function(data) {             
-                const lat = data.coord.lat;
-                const lon = data.coord.lon;
-                let apiUrl2 = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude={part}&appid=${apiKey}&units=imperial`;
-                fetch(apiUrl2)
+        .then(function(response) {
+            if (response.ok) {
+                response.json().then(function(data) {
+                    
+                    // Add city name to end of cityList array
+                    var cityObj = new Object();
+                    cityObj.name = data.name;
+                    cityList.push(cityObj);
+                    console.log(cityList);
+                    
+                    const lat = data.coord.lat;
+                    const lon = data.coord.lon;
+                    let apiUrl2 = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude={part}&appid=${apiKey}&units=imperial`;
+                    fetch(apiUrl2)
                     .then(function(response) {
                         if (response.ok) {
                             response.json().then(function(data2) {
-                                console.log(apiUrl2);
-                                console.log(data2);
-                                let uvIndex = data2.current.uvi;
-                                let uvIndexDiv = document.createElement("div");
-                                if (uvIndex < 3){
-                                    uvIndexDiv.setAttribute("class", "low");
-                                }
-                                else if (uvIndex >= 3 && uvIndex < 6 ) {
-                                    uvIndexDiv.setAttribute("class", "moderate");
-                                }
-                                else if (uvIndex >= 6 && uvIndex < 8 ) {
-                                    uvIndexDiv.setAttribute("class", "high");
-                                }
-                                else if (uvIndex >= 8 && uvIndex < 11 ) {
-                                    uvIndexDiv.setAttribute("class", "very-high");
-                                }
-                                else if (uvIndex >= 11 ) {
-                                    uvIndexDiv.setAttribute("class", "extreme");
-                                };
-                                
-                                // Data array of faily weather attributes
-                                // Index ranging from 1-5 for next five days in data object
-                                const dailyData = [
-                                    data2.daily[1],
-                                    data2.daily[2],
-                                    data2.daily[3],
-                                    data2.daily[4],
-                                    data2.daily[5]
-                                ];
+                                    console.log(apiUrl2);
+                                    console.log(data2);
+                                    
+                                    
+                                    
+                                    let uvIndex = data2.current.uvi;
+                                    let uvIndexDiv = document.createElement("div");
+                                    
+                                    // UV index conditions set below
+                                    if (uvIndex < 3){
+                                        uvIndexDiv.setAttribute("class", "low");
+                                    }
+                                    else if (uvIndex >= 3 && uvIndex < 6 ) {
+                                        uvIndexDiv.setAttribute("class", "moderate");
+                                    }
+                                    else if (uvIndex >= 6 && uvIndex < 8 ) {
+                                        uvIndexDiv.setAttribute("class", "high");
+                                    }
+                                    else if (uvIndex >= 8 && uvIndex < 11 ) {
+                                        uvIndexDiv.setAttribute("class", "very-high");
+                                    }
+                                    else if (uvIndex >= 11 ) {
+                                        uvIndexDiv.setAttribute("class", "extreme");
+                                    };
+                                    
+                                    // Data array of faily weather attributes
+                                    // Index ranging from 1-5 for next five days in data object
+                                    const dailyData = [
+                                        data2.daily[1],
+                                        data2.daily[2],
+                                        data2.daily[3],
+                                        data2.daily[4],
+                                        data2.daily[5]
+                                    ];
 
-                                uvIndexDiv.innerHTML = `UV Index: ${data2.current.uvi}`
-                                topDivContent2.appendChild(uvIndexDiv);
+                                    uvIndexDiv.innerHTML = `UV Index: ${data2.current.uvi}`
+                                    topDivContent2.appendChild(uvIndexDiv);
 
-                                // 5 day forecast list creation
-                                dailyData.forEach(displayForecast);
-                            })
-                        }
+                                    // 5 day forecast list creation
+                                    dailyData.forEach(displayForecast);
+                                    
+                                    
+                                    // console.log(cityList);
+                                    makeCityButton(data);
+                                    saveData();
+                                    loadData();
+                                })
+                            }
 
-                    })
-                    .catch(function(error) {
+                        })
+                        .catch(function(error) {
 
-                        alert("Error: Unable to Connect to OpenWeatherMap");
+                            alert("Error: Unable to Connect to OpenWeatherMap");
 
-                    })
+                        })
 
-                console.log(data);
-                
-                let forecastDiv = document.createElement("div");
-                let topDiv = document.createElement("div");
-                let topDivContent = document.createElement("div");
-                let topDivContent2 = document.createElement("div");
-                
-                cityTitle.textContent = data.name; // adds title of city
-                forecastHeader.innerHTML = `5 Day Forecast for ${data.name}`;
-                currentWeatherEl.appendChild(forecastDiv);
-                // Adds styling class and creates divs for display
-                forecastDiv.appendChild(topDiv);
-                topDiv.setAttribute("class", "flex justify-center ")
-                topDivContent.setAttribute("class", "flex-initial");
-
-                topDivContent2.setAttribute("class", "flex-initial flex-col pt-3 pb-3")
-                topDiv.appendChild(topDivContent);
-                topDiv.appendChild(topDivContent2);
-                topDivContent.innerHTML = 
-                `<img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="${data.weather[0].description}">`;
-
-                topDivContent2.innerHTML = 
+                        
+                    let forecastDiv = document.createElement("div");
+                    let topDiv = document.createElement("div");
+                    let topDivContent = document.createElement("div");
+                    let topDivContent2 = document.createElement("div");
+                    
+                    
+                    cityTitle.textContent = data.name; // adds title of city
+                    forecastHeader.innerHTML = `5 Day Forecast for ${data.name}`;
+                    currentWeatherEl.appendChild(forecastDiv);
+                    // Adds styling class and creates divs for display
+                    forecastDiv.appendChild(topDiv);
+                    topDiv.setAttribute("class", "flex justify-center ")
+                    topDivContent.setAttribute("class", "flex-initial");
+                    
+                    topDivContent2.setAttribute("class", "flex-initial flex-col pt-3 pb-3")
+                    topDiv.appendChild(topDivContent);
+                    topDiv.appendChild(topDivContent2);
+                    topDivContent.innerHTML = 
+                    `<img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="${data.weather[0].description}">`;
+                    
+                    topDivContent2.innerHTML = 
                     `<div>Currently: ${data.weather[0].main} / ${Math.floor(data.main.temp)} F</div>
-                    <div>Hi Temp: ${Math.floor(data.main.temp_max)} F</div>
-                    <div>Lo Temp: ${Math.floor(data.main.temp_min)} F</div>
-                    <div>Humidity: ${data.main.humidity}%</div>
-                    <div>Wind: ${Math.floor(data.wind.speed)}mph</div>`;
-            })
-        }
-    })
-    .catch(function(error) {
-        alert("Error: Unable to Connect to OpenWeatherMap");
-    })
+                        <div>Hi Temp: ${Math.floor(data.main.temp_max)} F</div>
+                        <div>Lo Temp: ${Math.floor(data.main.temp_min)} F</div>
+                        <div>Humidity: ${data.main.humidity}%</div>
+                        <div>Wind: ${Math.floor(data.wind.speed)}mph</div>`;
+                        
+                        
+                })
+            }
+        })
+        .catch(function(error) {
+            alert("Error: Unable to Connect to OpenWeatherMap");
+        })
 } 
 
+var saveData = function() {
+    
+    localStorage.setItem('cityList', JSON.stringify(cityList));
+    // localStorage.setItem(`cityObject_1`, JSON.stringify(data2));
+    
+}
+
+var loadData = function(array) {
+
+    var cityDetails = JSON.parse(localStorage.getItem("cityList"));
+    console.log(cityDetails);
+    if (cityDetails) {
+        
+        cityDetails.forEach(makeCityButton);
+    }
+    
+}
+
+
+loadData(cityList);
 
 var searchCity = function(event) {
-
+    
     // prevents page from refreshing by default
     event.preventDefault();
     dailyForecastEl.innerHTML = "";
     currentWeatherEl.innerHTML = "";
     
     // get value from input element
-    cityName = cityInput.value.trim()
+    cityName = cityInput.value.trim();
+    
+    
     
     if (cityName) {
-        getCityWeather(cityName);
         // clear old content
         cityInput.value = "";
-
-    }
-    else {
-        alert("Invalid City Name: Try Again!")
         forecastHeader.innerHTML = "";
         cityTitle.innerHTML = "";
-    }
 
-    
-    
+        // Run function
+        getCityWeather(cityName);
+        
+    }
+    else {
+        alert("Please Input a Valid City Name!")
+        
+    }
     
 }
 
@@ -176,7 +221,7 @@ var displayForecast = function(array){
             var time = date + ' ' + month + ' ' + year;
             return time;
         }
-      console.log(timeConverter(date));
+
    
 
     // append each list as a child to ul under class ".forecast"
@@ -217,7 +262,55 @@ var displayForecast = function(array){
     
 }
 
+function makeCityButton(array) {
+   
+    // console.log(localStorage);
+    
+    // var cityDetails = localStorage.getItem('cityObject');
+    // console.log("cityDetails: ", JSON.parse(cityDetails));
+
+    var cityName = array.name;
+    console.log(cityName);
+
+    let li = document.createElement("li")
+    li.setAttribute("class", "flex border-2 border-black bg-white w-1/5 p-px")
+    
+    let button = document.createElement("button");
+    button.setAttribute("type", "button");
+    button.setAttribute("class", "button text-center w-full")
+    button.innerHTML = `${cityName}`;
+    button.setAttribute("id", `${cityName}`);
+
+
+    if (!(document.getElementById(`${cityName}`))) {
+        
+        li.append(button);
+        buttonArea.append(li);
+        button.addEventListener("click", function(event){
+            event.preventDefault();
+            dailyForecastEl.innerHTML = "";
+            currentWeatherEl.innerHTML = "";
+            cityInput.value = "";
+            forecastHeader.innerHTML = "";
+            cityTitle.innerHTML = "";
+            var name = cityName;
+            // Run function
+            getCityWeather(name);
+        });
+    }
+    else {
+        
+        // do nothing...
+
+    }
+    
+
+}
+
+
+
 // Event Listener(s)
 cityForm.addEventListener("submit", searchCity);
+
 
 
